@@ -5,20 +5,26 @@ import com.app.project1.utils.UserSecurityUtils;
 import java.util.Date;
 
 public class User {
+    private int id;
     private String username;
     private String email;
     private String password;
     private Date creation_date;
 
-    public User(String username, String email, String password, Date creation_date) {
-        setUser(username, email, password, creation_date);
+    public User(int id, String username, String email, String password, Date creation_date) {
+        setUser(id, username, email, password, creation_date);
     }
 
-    public void setUser(String username, String email, String password, Date creation_date) {
+    public void setUser(int id, String username, String email, String password, Date creation_date) {
+        setId(id);
         setName(username);
         setEmail(email);
         setPassword(password);
         setCreationDate(creation_date);
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setName(String username) {
@@ -41,6 +47,15 @@ public class User {
 
     public void setCreationDate(Date creation_date) {
         this.creation_date = creation_date;
+    }
+
+    public int getId() {
+        try {
+            return id;
+        } catch (NullPointerException exe) {
+            System.out.println(exe.getMessage());
+        }
+        return -1;
     }
 
     public String getUsername() {

@@ -1,5 +1,6 @@
 package com.app.project1;
 
+import com.app.project1.services.UserServices;
 import com.app.project1.utils.UserSecurityUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,7 +11,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 import java.net.URL;
-import java.util.Date;
 import java.util.ResourceBundle;
 
 public class RegisterController implements Initializable {
@@ -57,6 +57,6 @@ public class RegisterController implements Initializable {
             errorLabel.setText("Passwords do not match");
         }
 
-        UserSecurityUtils.insertUser(username, email, password1);
+        UserServices.insertUser(username, email, password1);
     }
 }

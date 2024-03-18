@@ -6,8 +6,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-
 public class MainApplication extends Application {
 
     public Stage stage;

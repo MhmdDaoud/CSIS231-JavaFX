@@ -1,5 +1,6 @@
 package com.app.project1;
 
+import com.app.project1.services.UserServices;
 import com.app.project1.session.SessionManager;
 import com.app.project1.session.User;
 import com.app.project1.utils.UserSecurityUtils;
@@ -41,7 +42,7 @@ public class LoginController implements Initializable {
         String email = emailField.getText();
         String password = passwordField.getText();
         if (UserSecurityUtils.authenticate(email, password)) {
-            User user = UserSecurityUtils.getUserByEmail(email);
+            User user = UserServices.getUserByEmail(email);
             SessionManager.login(user);
             mainApplication.changeFXML("homepage.fxml");
         } else {
