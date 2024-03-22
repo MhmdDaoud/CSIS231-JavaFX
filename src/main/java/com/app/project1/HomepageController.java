@@ -1,12 +1,10 @@
 package com.app.project1;
 
-import com.app.project1.database.DBHandler;
 import com.app.project1.services.UserServices;
 import com.app.project1.services.AccountServices;
 import com.app.project1.session.Account;
 import com.app.project1.session.SessionManager;
 import com.app.project1.utils.DataQueryingUtils;
-import com.mysql.cj.jdbc.result.ResultSetImpl;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -21,9 +19,6 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.time.Month;
 import java.time.YearMonth;
 import java.util.ArrayList;
@@ -84,8 +79,8 @@ public class HomepageController implements Initializable {
     private void setInfoLabels() {
         YearMonth currentYearMonth = YearMonth.now();
         Month currentMonth = currentYearMonth.getMonth();
-        totExpensesLabel.setText(currentMonth + " expenses: " +
-                DataQueryingUtils.getTotalAccountExpenses(SessionManager.getCurrentAccount().getAccountID()));
+        totExpensesLabel.setText(currentMonth.name() + " expenses: " +
+                DataQueryingUtils.getMonthlyAccountExpenses(SessionManager.getCurrentAccount().getAccountID()));
     }
 
     public void addPressed() {
@@ -132,5 +127,13 @@ public class HomepageController implements Initializable {
                 expensesPie.getData().clear();
             }
         });
+    }
+
+    public void transBtn() {
+        mainApplication.changeFXML("transactions.fxml");
+    }
+
+    public void budgetsBtn() {
+        mainApplication.changeFXML("budgets.fxml");
     }
 }

@@ -25,7 +25,7 @@ public class RegisterController implements Initializable {
     Label errorLabel;
 
     @FXML
-    Button registerBtn;
+    Button registerBtn, loginBtn;
 
     private MainApplication mainApplication;
 
@@ -37,8 +37,12 @@ public class RegisterController implements Initializable {
         }
     }
 
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void loginPressed() {
+        try {
+            this.mainApplication.changeFXML("login.fxml");
+        } catch (Exception exe) {
+            System.out.println(exe.getMessage());
+        }
     }
 
     public void processRegister(ActionEvent event) {
@@ -58,5 +62,9 @@ public class RegisterController implements Initializable {
         }
 
         UserServices.insertUser(username, email, password1);
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
     }
 }

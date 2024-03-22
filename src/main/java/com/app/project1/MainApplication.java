@@ -44,6 +44,16 @@ public class MainApplication extends Application {
                     RegisterController registerController = fxmlLoader.getController();
                     registerController.setApplication(this);
                 }
+
+                case "transactions.fxml" -> {
+                    TransactionsController transactionsController = fxmlLoader.getController();
+                    transactionsController.setApplication(this);
+                }
+
+                case "budgets.fxml" -> {
+                    BudgetsController budgetsController = fxmlLoader.getController();
+                    budgetsController.setApplication(this);
+                }
             }
 
             stage.show();

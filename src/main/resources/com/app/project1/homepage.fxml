@@ -14,7 +14,7 @@
    <children>
       <HBox alignment="CENTER" prefHeight="51.0" prefWidth="800.0" style="-fx-border-color: #000000;">
          <children>
-            <Button fx:id="budgetsBtn" mnemonicParsing="false" style="-fx-border-color: black; -fx-border-radius: 3;" text="BUDGETS">
+            <Button fx:id="budgetsBtn" onAction="#budgetsBtn" mnemonicParsing="false" style="-fx-border-color: black; -fx-border-radius: 3;" text="BUDGETS">
                <font>
                   <Font name="Roboto Bold" size="22.0" />
                </font>
@@ -36,7 +36,7 @@
                   <Insets left="12.0" right="12.0" />
                </HBox.margin>
             </Button>
-            <Button fx:id="transBtn" mnemonicParsing="false" style="-fx-border-color: black; -fx-border-radius: 3;" text="TRANSACTIONS">
+            <Button fx:id="transBtn" onAction="#transBtn" mnemonicParsing="false" style="-fx-border-color: black; -fx-border-radius: 3;" text="TRANSACTIONS">
                <font>
                   <Font name="Roboto Bold" size="22.0" />
                </font>

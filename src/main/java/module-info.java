@@ -8,4 +8,5 @@ module com.app.project1 {
     exports com.app.project1;
     exports com.app.project1.database;
     opens com.app.project1.database to javafx.fxml;
+    opens com.app.project1.session to javafx.base;
 }
