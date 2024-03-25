@@ -66,18 +66,27 @@ public class RegisterController implements Initializable {
 
         if (!UserSecurityUtils.isStrongPassword(password1)) {
             errorLabel.setText("Invalid Password");
+            return;
         }
 
         if (!UserSecurityUtils.isEmail(email)) {
             errorLabel.setText("Invalid email address");
+            return;
+        }
+
+        if (UserSecurityUtils.emailExists(email)) {
+            errorLabel.setText("Email already exists");
+            return;
         }
 
         if (!password1.equals(password2)) {
             errorLabel.setText("Passwords do not match");
+            return;
         }
 
         if (UserSecurityUtils.usernameExists(username)) {
             errorLabel.setText("Username already exists");
+            return;
         }
 
         String generatedKey = UserSecurityUtils.generateEncryptionKey();

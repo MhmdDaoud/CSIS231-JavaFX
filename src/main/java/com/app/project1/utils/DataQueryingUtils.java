@@ -433,6 +433,12 @@ public class DataQueryingUtils {
         return transactionList;
     }
 
+    /**
+     * Converts a month name to its corresponding numerical representation.
+     *
+     * @param monthName The name of the month to convert.
+     * @return The numerical representation of the month (1 for January, 2 for February, ..., 12 for December), or -1 if the month name is invalid.
+     */
     public static int monthNameToNumber(String monthName) {
         String[] monthNames = {
                 "January", "February", "March", "April", "May", "June",

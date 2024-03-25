@@ -1,6 +1,8 @@
 package com.app.project1.session;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Represents a budget entity with specific attributes.
@@ -15,6 +17,8 @@ public class Budget {
     private Date end_date;
     private double actual_expenses;
     private double remaining_amount;
+    private String budgetMonth;
+
 
     /**
      * Constructs a new Budget object with the specified parameters.
@@ -201,5 +205,25 @@ public class Budget {
      */
     public void setRemainingAmount(double remaining_amount) {
         this.remaining_amount = remaining_amount;
+    }
+
+    /**
+     * Sets the budget month based on the start date.
+     *
+     * */
+    public void setBudgetMonth() {
+        LocalDate localStartDate = start_date.toLocalDate();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM");
+        this.budgetMonth = localStartDate.format(formatter);
+    }
+
+
+    /**
+     * Gets the month of the budget.
+     *
+     * @return The month of the budget.
+     */
+    public String getBudgetMonth() {
+        return budgetMonth;
     }
 }

@@ -196,4 +196,29 @@ public class UserSecurityUtils {
             return null;
         }
     }
+
+    /**
+     * Checks if the specified email exists in the users table of the database.
+     *
+     * @param email The email to check for existence.
+     * @return true if the email exists in the database, false otherwise.
+     */
+    public static boolean emailExists(String email) {
+        DBHandler dbHandler = new DBHandler();
+        try {
+            PreparedStatement statement = dbHandler.getConnection().prepareStatement(
+                    "SELECT * FROM users WHERE LOWER(user_email) = ?;"
+            );
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        } finally {
+            dbHandler.closeConnection();
+        }
+        return false;
+    }
 }

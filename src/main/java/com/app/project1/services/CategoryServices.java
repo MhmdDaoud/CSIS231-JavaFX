@@ -8,7 +8,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+/**
+ * Provides services related to category management in the application.
+ */
 public class CategoryServices {
+
+    /**
+     * Retrieves the ID of a category based on its name.
+     *
+     * @param category_name The name of the category.
+     * @return The ID of the category, or -1 if the category is not found.
+     */
     public static int getCategoryID(String category_name) {
         DBHandler dbHandler = new DBHandler();
         try {
@@ -28,6 +38,12 @@ public class CategoryServices {
         return -1;
     }
 
+    /**
+     * Retrieves the name of a category based on its ID.
+     *
+     * @param category_id The ID of the category.
+     * @return The name of the category, or null if the category is not found.
+     */
     public static String getCategoryName(int category_id) {
         DBHandler dbHandler = new DBHandler();
         try {
@@ -45,7 +61,11 @@ public class CategoryServices {
         return null;
     }
 
-
+    /**
+     * Retrieves a list of all categories.
+     *
+     * @return An ObservableList containing all category names, or an empty list if no categories are found.
+     */
     public static ObservableList<String> getAllCategories() {
         DBHandler dbHandler = new DBHandler();
         ObservableList<String> categories = FXCollections.observableArrayList();
@@ -65,6 +85,11 @@ public class CategoryServices {
         return categories;
     }
 
+    /**
+     * Retrieves a list of categories suitable for budget allocation (excluding "Income").
+     *
+     * @return An ObservableList containing budget categories, or an empty list if no categories are found.
+     */
     public static ObservableList<String> getBudgetCategories() {
         DBHandler dbHandler = new DBHandler();
         ObservableList<String> categories = FXCollections.observableArrayList();

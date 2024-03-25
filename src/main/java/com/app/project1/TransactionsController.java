@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
@@ -22,8 +23,8 @@ import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -38,6 +39,9 @@ import java.util.ResourceBundle;
 import static com.app.project1.services.CategoryServices.getCategoryID;
 import static com.app.project1.services.TransactionServices.*;
 
+/**
+ * Controller class for the user transactions view.
+ */
 public class TransactionsController implements Initializable {
 
     @FXML
@@ -66,10 +70,20 @@ public class TransactionsController implements Initializable {
     BarChart<String, Number> barChart;
     private MainApplication mainApplication;
 
+    /**
+     * Sets the MainApplication instance for this controller.
+     *
+     * @param mainApplication The MainApplication instance to set.
+     */
     public void setApplication(MainApplication mainApplication) {
         this.mainApplication = mainApplication;
     }
 
+    /**
+     * Handles the back button press event by changing the FXML to "homepage.fxml".
+     *
+     * @param event The ActionEvent triggered by the back button press.
+     */
     public void backPressed(ActionEvent event) {
         try {
             mainApplication.changeFXML("homepage.fxml");
@@ -78,6 +92,11 @@ public class TransactionsController implements Initializable {
         }
     }
 
+    /**
+     * Handles the refresh button press event by refreshing the data displayed in the TableView and BarChart.
+     *
+     * @param event The ActionEvent triggered by the refresh button press.
+     */
     public void refreshPressed(ActionEvent event) {
         if (!selectAccountCombo.getSelectionModel().isEmpty()) {
             refreshBtn.setDisable(true);
@@ -104,6 +123,11 @@ public class TransactionsController implements Initializable {
         }
     }
 
+    /**
+     * Handles the search button press event by searching for transactions based on the entered keyword.
+     *
+     * @param event The ActionEvent triggered by the search button press.
+     */
     public void searchPressed(ActionEvent event) {
         if (!searchBar.getText().isEmpty()) {
             ObservableList<Transaction> transactions = DataQueryingUtils.searchForKeyword(
@@ -113,9 +137,18 @@ public class TransactionsController implements Initializable {
         }
     }
 
+    /**
+     * Handles the filter button press event by filtering transactions based on the selected date range.
+     *
+     * @param event The ActionEvent triggered by the filter button press.
+     */
     public void filterPressed(ActionEvent event) {
         LocalDate startDate = startDateField.getValue();
         LocalDate endDate = endDateField.getValue();
+
+        if (startDate == null || endDate == null) {
+            return;
+        }
 
         ObservableList<Transaction> transactions = DataQueryingUtils.filterByDate(
                 startDate, endDate, SessionManager.getCurrentAccount().getAccountID()
@@ -124,48 +157,60 @@ public class TransactionsController implements Initializable {
         dataTable.setItems(transactions);
     }
 
+    /**
+     * Handles the add transaction button press event by displaying a stage with input fields for adding a new transaction.
+     *
+     * @param event The ActionEvent triggered by the add transaction button press.
+     */
     public void addTransBtnPressed(ActionEvent event) {
         if (selectAccountCombo.getSelectionModel().isEmpty()) {
             return;
         }
-
         Stage tempStage = new Stage();
-        VBox vbox = new VBox();
-        HBox hBox1 = new HBox();
-        HBox hBox2 = new HBox();
-        VBox errorVbox = new VBox();
-        vbox.getChildren().addAll(hBox1, hBox2);
-        vbox.setAlignment(Pos.CENTER);
+        tempStage.setResizable(false);
+        GridPane gridPane = new GridPane();
+        gridPane.setPadding(new Insets(10));
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
 
-        Label errorLabel = new Label("");
-        errorVbox.setAlignment(Pos.CENTER);
-        errorVbox.getChildren().add(errorLabel);
-        vbox.getChildren().add(errorLabel);
-
+        Label transactionDescLabel = new Label("Transaction Description:");
         TextField transactionDescField = new TextField();
         transactionDescField.setPromptText("Enter transaction description");
 
+        Label transactionDateLabel = new Label("Transaction Date:");
         DatePicker transactionDateField = new DatePicker();
         transactionDateField.setPromptText("Select transaction date");
 
-        TextField transactionAmountField = new TextField();
-        transactionAmountField.setPromptText("Enter transaction amount");
-
+        Label categoryLabel = new Label("Category:");
         ComboBox<String> categorySelector = new ComboBox<>();
         ObservableList<String> categories = CategoryServices.getAllCategories();
         categorySelector.setItems(categories);
         categorySelector.setMinWidth(150);
 
+        Label transactionAmountLabel = new Label("Transaction Amount:");
+        TextField transactionAmountField = new TextField();
+        transactionAmountField.setPromptText("Enter transaction amount");
+
         Button addBtn = new Button("ADD");
 
-        hBox1.getChildren().addAll(transactionDescField, transactionDateField);
-        hBox1.setSpacing(5);
-        hBox2.getChildren().addAll(categorySelector, transactionAmountField, addBtn);
-        hBox2.setSpacing(5);
+        Label errorLabel = new Label("");
+        errorLabel.setTextFill(Color.RED);
 
-        tempStage.setScene(new Scene(vbox, 350, 100));
+        gridPane.add(transactionDescLabel, 0, 0);
+        gridPane.add(transactionDescField, 1, 0);
+        gridPane.add(transactionDateLabel, 0, 1);
+        gridPane.add(transactionDateField, 1, 1);
+        gridPane.add(categoryLabel, 0, 2);
+        gridPane.add(categorySelector, 1, 2);
+        gridPane.add(transactionAmountLabel, 0, 3);
+        gridPane.add(transactionAmountField, 1, 3);
+        gridPane.add(errorLabel, 0, 4, 2, 1);
+        gridPane.add(addBtn, 0, 5, 2, 1);
+
+        tempStage.setScene(new Scene(gridPane, 350, 250));
         tempStage.setResizable(false);
         tempStage.show();
+
 
         addBtn.setOnAction(e -> {
             String transactionDesc = transactionDescField.getText().trim();
@@ -198,6 +243,9 @@ public class TransactionsController implements Initializable {
         });
     }
 
+    /**
+     * Handles the delete transaction button press event by displaying a stage for entering the transaction ID to delete.
+     */
     public void deleteTransPressed() {
         if (selectAccountCombo.getSelectionModel().isEmpty()) {
             return;
@@ -207,36 +255,52 @@ public class TransactionsController implements Initializable {
         tempStage.setTitle("Transaction Deletion");
         tempStage.setResizable(false);
 
-        VBox vbox = new VBox();
-        vbox.setAlignment(Pos.CENTER);
-        Label instructLabel = new Label("Enter transaction ID");
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setPadding(new Insets(10));
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
+
+        Label instructLabel = new Label("Enter Transaction ID:");
         TextField idField = new TextField();
         idField.setPromptText("Enter transaction ID");
-        Button delete = new Button("DELETE");
+
+        Button deleteBtn = new Button("DELETE");
+
         Label errorLabel = new Label("");
+        errorLabel.setTextFill(Color.RED);
 
-        vbox.getChildren().addAll(instructLabel, idField, delete, errorLabel);
-        vbox.setSpacing(5);
-        tempStage.setScene(new Scene(vbox, 150, 125));
-        tempStage.show();
+        gridPane.add(instructLabel, 0, 0);
+        gridPane.add(idField, 1, 0);
+        gridPane.add(errorLabel, 0, 1, 2, 1);
+        gridPane.add(deleteBtn, 0, 2, 2, 1);
 
-        delete.setOnAction(e -> {
+        deleteBtn.setOnAction(e -> {
             if (idField.getText().isEmpty()) {
                 return;
             }
             boolean confirmed = ConfirmationBox.show("Confirmation", "Are you sure you want to delete?");
-            if (confirmed)
+            if (confirmed) {
                 try {
                     int transactionID = Integer.parseInt(idField.getText());
                     if (deleteTransaction(transactionID)) {
                         tempStage.close();
+                    } else {
+                        errorLabel.setText("Invalid Transaction ID.");
                     }
                 } catch (Exception exe) {
-                    errorLabel.setText("Invalid Transaction ID.");
+                    errorLabel.setText("An error has occurred, please try again later.");
                 }
+            }
         });
+
+        tempStage.setScene(new Scene(gridPane, 300, 150));
+        tempStage.show();
     }
 
+    /**
+     * Handles the edit transaction button press event by displaying a stage for editing an existing transaction.
+     */
     public void editTransPressed() {
         if (selectAccountCombo.getSelectionModel().isEmpty()) {
             return;
@@ -246,53 +310,57 @@ public class TransactionsController implements Initializable {
         tempStage.setTitle("Edit Transaction");
         tempStage.setResizable(false);
 
-        VBox vbox = new VBox();
-        vbox.setSpacing(10);
-        VBox vbox1 = new VBox();
-        HBox hBox1 = new HBox();
-        vbox1.setAlignment(Pos.CENTER);
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setPadding(new Insets(10));
+        gridPane.setHgap(10);
+        gridPane.setVgap(10);
 
-        Label instructionLabel = new Label("Enter transaction ID to edit");
+        Label instructionLabel = new Label("Enter Transaction ID to edit:");
         TextField idField = new TextField();
-        idField.setDisable(false);
         idField.setPromptText("Enter transaction ID");
+
         Button retrieveBtn = new Button("RETRIEVE");
-        Label errorLabel = new Label("");
 
-        hBox1.getChildren().addAll(instructionLabel, idField, retrieveBtn);
-        hBox1.setSpacing(10);
-        vbox.getChildren().addAll(hBox1, errorLabel, vbox1);
-
-        Label descLabel = new Label("Transaction Description");
+        Label descLabel = new Label("Transaction Description:");
         TextField descField = new TextField();
-        Label dateLabel = new Label("Transaction Date");
+        descField.setDisable(true);
+        Label dateLabel = new Label("Transaction Date:");
         DatePicker dateField = new DatePicker();
-        Label amountLabel = new Label("Transaction Amount");
+        dateField.setDisable(true);
+        Label amountLabel = new Label("Transaction Amount:");
         TextField amountField = new TextField();
-        Label catLabel = new Label("Transaction Category");
+        amountField.setDisable(true);
+        Label catLabel = new Label("Transaction Category:");
         ComboBox<String> catSelector = new ComboBox<>();
+        catSelector.setDisable(true);
         ObservableList<String> categories = CategoryServices.getAllCategories();
         catSelector.setItems(categories);
-        Button updateBtn = new Button("UPDATE");
 
-        vbox1.getChildren().addAll(
-                new HBox(10, descLabel, descField),
-                new HBox(10, dateLabel, dateField),
-                new HBox(10, amountLabel, amountField),
-                new HBox(10, catLabel, catSelector),
-                new HBox(10, updateBtn)
-        );
-        vbox1.setSpacing(10);
-        vbox1.getChildren().forEach(node -> {
-            if (node instanceof HBox hbox) {
-                hbox.getChildren().forEach(child -> {
-                    if (child instanceof Control control) {
-                        control.setVisible(false);
-                        control.setDisable(true);
-                    }
-                });
-            }
-        });
+        Label errorLabel = new Label("");
+        errorLabel.setTextFill(Color.RED);
+
+        Button updateBtn = new Button("UPDATE");
+        updateBtn.setDisable(true);
+
+        gridPane.add(instructionLabel, 0, 0);
+        gridPane.add(idField, 1, 0);
+        gridPane.add(retrieveBtn, 2, 0);
+
+        gridPane.add(descLabel, 0, 1);
+        gridPane.add(descField, 1, 1);
+
+        gridPane.add(dateLabel, 0, 2);
+        gridPane.add(dateField, 1, 2);
+
+        gridPane.add(amountLabel, 0, 3);
+        gridPane.add(amountField, 1, 3);
+
+        gridPane.add(catLabel, 0, 4);
+        gridPane.add(catSelector, 1, 4);
+
+        gridPane.add(errorLabel, 0, 5, 3, 1);
+        gridPane.add(updateBtn, 0, 6, 3, 1);
 
         retrieveBtn.setOnAction(e -> {
             try {
@@ -302,23 +370,17 @@ public class TransactionsController implements Initializable {
                 );
 
                 if (transactionData != null) {
-                    vbox1.getChildren().forEach(node -> {
-                        if (node instanceof HBox hbox) {
-                            hbox.getChildren().forEach(child -> {
-                                if (child instanceof Control control) {
-                                    control.setVisible(true);
-                                    control.setDisable(false);
-                                }
-                            });
-                        }
-                    });
+                    descField.setDisable(false);
+                    dateField.setDisable(false);
+                    amountField.setDisable(false);
                     idField.setDisable(true);
 
                     descField.setText(transactionData.getTransactionDescription());
                     dateField.setValue(transactionData.getTransactionDate());
                     catSelector.setValue(transactionData.getTransactionCategory());
-                    catSelector.setDisable(true);
                     amountField.setText(transactionData.getTransactionAmount());
+
+                    updateBtn.setDisable(false);
 
                     updateBtn.setOnAction(u -> {
                         String transaction_desc = descField.getText();
@@ -334,17 +396,18 @@ public class TransactionsController implements Initializable {
                     errorLabel.setText("Transaction not found");
                 }
 
-
             } catch (Exception exe) {
                 errorLabel.setText("Error retrieving transaction");
             }
         });
 
-        vbox.setAlignment(Pos.CENTER);
-        tempStage.setScene(new Scene(vbox, 400, 250));
+        tempStage.setScene(new Scene(gridPane, 450, 250));
         tempStage.show();
     }
 
+    /**
+     * Sets the items in the selectAccountCombo ComboBox based on the user's accounts retrieved from the database.
+     */
     private void setSelectAccountCombo() {
         try {
             ArrayList<Account> accounts = UserServices.getUserAccounts(SessionManager.getCurrentUser().getId());
@@ -356,6 +419,9 @@ public class TransactionsController implements Initializable {
         }
     }
 
+    /**
+     * Sets up the bar chart to display monthly expense distribution for the current account.
+     */
     private void setExpenseGraph() {
         CategoryAxis xAxis = new CategoryAxis();
         barChart.setTitle("Monthly Distribution");
@@ -368,6 +434,9 @@ public class TransactionsController implements Initializable {
         barChart.getData().add(series);
     }
 
+    /**
+     * Sets up the bar chart to display monthly income distribution for the current account.
+     */
     private void setIncomeGraph() {
         CategoryAxis xAxis = new CategoryAxis();
         barChart.setTitle("Monthly Distribution");
@@ -380,6 +449,9 @@ public class TransactionsController implements Initializable {
         barChart.getData().add(series);
     }
 
+    /**
+     * Sets the labels for total income, total expenses, and net balance based on data retrieved from the database.
+     */
     private void setLabels() {
         double totalAccountIncome = DataQueryingUtils.getTotalAccountIncome(
                 SessionManager.getCurrentAccount().getAccountID(),
@@ -396,6 +468,9 @@ public class TransactionsController implements Initializable {
         netBalanceField.setText("Net Balance: " + netBalance + "$");
     }
 
+    /**
+     * Clears the text and selection in labels, fields, and date pickers related to transactions and search criteria.
+     */
     private void clearLabels() {
         totIncomeField.setText("Total Income: ");
         totExpensesField.setText("Total Expenses: ");
@@ -405,6 +480,9 @@ public class TransactionsController implements Initializable {
         endDateField.setValue(null);
     }
 
+    /**
+     * Initializes the columns of the transactions table view and sets up the data table.
+     */
     private void initializeTableView() {
         transactionIdColumn.setCellValueFactory(new PropertyValueFactory<>("transaction_id"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("transaction_description"));
@@ -415,6 +493,9 @@ public class TransactionsController implements Initializable {
         setDataTable();
     }
 
+    /**
+     * Sets the items in the transactions data table based on the current account's transactions retrieved from the database.
+     */
     private void setDataTable() {
         ObservableList<Transaction> transactions = DataQueryingUtils.getTableViewData(
                 SessionManager.getCurrentAccount().getAccountID()
@@ -422,6 +503,12 @@ public class TransactionsController implements Initializable {
         dataTable.setItems(transactions);
     }
 
+    /**
+     * Initializes the controller after its root element has been completely processed.
+     *
+     * @param url            The location used to resolve relative paths for the root object.
+     * @param resourceBundle The resources used to localize the root object.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setSelectAccountCombo();

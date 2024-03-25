@@ -8,8 +8,22 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Date;
 
+/**
+ * Provides services related to transaction management in the application.
+ */
 public class TransactionServices {
 
+    /**
+     * Inserts a new transaction into the database.
+     *
+     * @param user_id                The ID of the user associated with the transaction.
+     * @param account_id             The ID of the account associated with the transaction.
+     * @param transaction_description The description of the transaction.
+     * @param category_id            The ID of the category associated with the transaction.
+     * @param transaction_date       The date of the transaction.
+     * @param transaction_amount     The amount of the transaction.
+     * @return True if the transaction was successfully inserted, false otherwise.
+     */
     public static boolean insertTransaction(int user_id, int account_id, String transaction_description, int category_id,
                                             Date transaction_date, double transaction_amount) {
         DBHandler dbHandler = new DBHandler();
@@ -37,6 +51,12 @@ public class TransactionServices {
         return false;
     }
 
+    /**
+     * Deletes a transaction from the database.
+     *
+     * @param transaction_id The ID of the transaction to delete.
+     * @return True if the transaction was successfully deleted, false otherwise.
+     */
     public static boolean deleteTransaction(int transaction_id) {
         DBHandler dbHandler = new DBHandler();
         try {
@@ -56,6 +76,13 @@ public class TransactionServices {
         return false;
     }
 
+    /**
+     * Retrieves transaction fields from the database.
+     *
+     * @param transaction_id The ID of the transaction to retrieve.
+     * @param account_id     The ID of the account associated with the transaction.
+     * @return A TransactionData object containing transaction information, or null if no transaction is found.
+     */
     public static TransactionData getTransactionFields(int transaction_id, int account_id) {
         DBHandler dbHandler = new DBHandler();
         try {
@@ -86,6 +113,15 @@ public class TransactionServices {
         return null;
     }
 
+    /**
+     * Updates a transaction in the database.
+     *
+     * @param transactionId     The ID of the transaction to update.
+     * @param transactionDesc   The new description of the transaction.
+     * @param transactionDate   The new date of the transaction.
+     * @param transactionAmount The new amount of the transaction.
+     * @return True if the transaction was successfully updated, false otherwise.
+     */
     public static boolean updateTransaction(int transactionId, String transactionDesc,
                                             java.sql.Date transactionDate, double transactionAmount) {
         DBHandler dbHandler = new DBHandler();
