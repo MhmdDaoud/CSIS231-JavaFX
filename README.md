@@ -14,7 +14,6 @@ The Finance Manager Application is built using JavaFX and MySQL, providing a use
 - **Categories:** Manage budget categories for better organization and tracking of expenses.
 - **Budgeting:** Set budget limits, track spending, and receive alerts for overspending.
 - **Reports and Analysis:** Generate reports, view charts, and analyze financial data to make informed decisions.
-- **Settings:** Customize application settings, notifications, and user preferences.
 
 ## Installation
 
@@ -39,6 +38,6 @@ The Finance Manager Application is built using JavaFX and MySQL, providing a use
 - Transactions: Add, edit, or delete transactions and categorize them.
 - Budgets: Set budget limits, manage categories, and track budget performance.
 
-## Liscence
+## Database ERD
 
-This project is licensed under the MIT License, which means you are free to use, modify, and distribute the code as long as you include the original license notice.
+![alt text](image.png)
