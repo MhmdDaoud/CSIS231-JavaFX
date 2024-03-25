@@ -28,11 +28,12 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.net.URL;
-import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
-import java.util.*;
-import java.util.concurrent.CountDownLatch;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.ResourceBundle;
 
 import static com.app.project1.services.CategoryServices.getCategoryID;
 import static com.app.project1.services.TransactionServices.*;
@@ -180,7 +181,9 @@ public class TransactionsController implements Initializable {
                 java.sql.Date transactionDate = java.sql.Date.valueOf(transactionDateValue);
                 int categoryId = getCategoryID(categoryValue);
 
-                if (insertTransaction(transactionDesc, categoryId, transactionDate, transactionAmount)) {
+                if (insertTransaction(SessionManager.getCurrentUser().getId(), SessionManager.getCurrentAccount().getAccountID(),
+                        transactionDesc, categoryId, transactionDate, transactionAmount)
+                ) {
                     tempStage.close();
                 } else {
                     errorLabel.setText("Failed to insert transaction.");
@@ -244,6 +247,7 @@ public class TransactionsController implements Initializable {
         tempStage.setResizable(false);
 
         VBox vbox = new VBox();
+        vbox.setSpacing(10);
         VBox vbox1 = new VBox();
         HBox hBox1 = new HBox();
         vbox1.setAlignment(Pos.CENTER);
@@ -313,6 +317,7 @@ public class TransactionsController implements Initializable {
                     descField.setText(transactionData.getTransactionDescription());
                     dateField.setValue(transactionData.getTransactionDate());
                     catSelector.setValue(transactionData.getTransactionCategory());
+                    catSelector.setDisable(true);
                     amountField.setText(transactionData.getTransactionAmount());
 
                     updateBtn.setOnAction(u -> {
@@ -321,7 +326,7 @@ public class TransactionsController implements Initializable {
                         int category_id = getCategoryID(String.valueOf(catSelector.getSelectionModel()));
                         double transaction_amount = Double.parseDouble(amountField.getText());
 
-                        if (updateTransaction(transaction_id, transaction_desc, transaction_date, category_id, transaction_amount)) {
+                        if (updateTransaction(transaction_id, transaction_desc, transaction_date, transaction_amount)) {
                             tempStage.close();
                         }
                     });
@@ -423,7 +428,9 @@ public class TransactionsController implements Initializable {
 
         selectAccountCombo.valueProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue != null) {
-                SessionManager.setCurrentAccount(AccountServices.getAccountByName(newValue));
+                SessionManager.setCurrentAccount(
+                        AccountServices.getAccountByName(SessionManager.getCurrentUser().getId(), newValue)
+                );
                 barChart.getData().clear();
                 setLabels();
                 initializeTableView();

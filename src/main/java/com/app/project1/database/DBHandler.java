@@ -56,7 +56,6 @@ public class DBHandler {
         try {
             if (connection != null && !connection.isClosed()) {
                 connection.close();
-                System.out.println("Database connection closed.");
             }
         } catch (SQLException exe) {
             System.out.println("Error closing database connection: " + exe.getMessage());

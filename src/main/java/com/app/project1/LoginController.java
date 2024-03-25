@@ -12,24 +12,33 @@ import javafx.scene.control.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * Controller class for the login view.
+ */
 public class LoginController implements Initializable {
-    @FXML
-    Button loginBtn;
 
     @FXML
-    TextField emailField;
+    private Button loginBtn;
 
     @FXML
-    PasswordField passwordField;
+    private TextField emailField;
 
     @FXML
-    Label errorLabel;
+    private PasswordField passwordField;
 
     @FXML
-    Hyperlink registerLink;
+    private Label errorLabel;
+
+    @FXML
+    private Hyperlink registerLink;
 
     private MainApplication mainApplication;
 
+    /**
+     * Sets the main application instance for this controller.
+     *
+     * @param mainApplication The MainApplication instance.
+     */
     public void setApplication(MainApplication mainApplication) {
         try {
             this.mainApplication = mainApplication;
@@ -38,6 +47,11 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Handles the login process when the login button is pressed.
+     *
+     * @param event The ActionEvent triggered by clicking the login button.
+     */
     public void processLogin(ActionEvent event) {
         String email = emailField.getText();
         String password = passwordField.getText();
@@ -51,6 +65,11 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Redirects the user to the registration view when the register hyperlink is clicked.
+     *
+     * @param event The ActionEvent triggered by clicking the register hyperlink.
+     */
     public void registerRedirect(ActionEvent event) {
         try {
             mainApplication.changeFXML("register.fxml");
@@ -59,6 +78,12 @@ public class LoginController implements Initializable {
         }
     }
 
+    /**
+     * Initializes the controller.
+     *
+     * @param url            The location used to resolve relative paths for the root object.
+     * @param resourceBundle The resource bundle that contains locale-specific data.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
     }

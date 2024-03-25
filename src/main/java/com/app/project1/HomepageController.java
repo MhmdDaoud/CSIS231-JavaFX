@@ -1,7 +1,7 @@
 package com.app.project1;
 
-import com.app.project1.services.UserServices;
 import com.app.project1.services.AccountServices;
+import com.app.project1.services.UserServices;
 import com.app.project1.session.Account;
 import com.app.project1.session.SessionManager;
 import com.app.project1.utils.DataQueryingUtils;
@@ -16,25 +16,25 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.net.URL;
 import java.time.Month;
 import java.time.YearMonth;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class HomepageController implements Initializable {
 
     @FXML
-    Button transBtn, expensesBtn, budgetsBtn, settingsBtn, addAccountBtn;
-
+    Button transBtn, expensesBtn, budgetsBtn, settingsBtn, addAccountBtn, logoutBtn;
     @FXML
-    Label welcomeLabel, totExpensesLabel;
-
+    Label welcomeLabel, totExpensesLabel, acctBalanceLabel;
     @FXML
     PieChart expensesPie;
-
     @FXML
     ComboBox<String> accountComboBox;
     private MainApplication mainApplication;
@@ -67,6 +67,7 @@ public class HomepageController implements Initializable {
 
     private void setComboBox() {
         try {
+            accountComboBox.getItems().clear();
             ArrayList<Account> accounts = UserServices.getUserAccounts(SessionManager.getCurrentUser().getId());
             for (Account account : accounts) {
                 accountComboBox.getItems().add(account.getAccountName());
@@ -79,13 +80,22 @@ public class HomepageController implements Initializable {
     private void setInfoLabels() {
         YearMonth currentYearMonth = YearMonth.now();
         Month currentMonth = currentYearMonth.getMonth();
-        totExpensesLabel.setText(currentMonth.name() + " expenses: " +
-                DataQueryingUtils.getMonthlyAccountExpenses(SessionManager.getCurrentAccount().getAccountID()));
+        String formattedMonth = currentMonth.getDisplayName(TextStyle.FULL, Locale.getDefault());
+        formattedMonth = formattedMonth.substring(0, 1).toUpperCase() + formattedMonth.substring(1).toLowerCase();
+
+        totExpensesLabel.setText(formattedMonth + " Expenses:\n" +
+                DataQueryingUtils.getMonthlyAccountExpenses(SessionManager.getCurrentAccount().getAccountID()) + "$");
+        acctBalanceLabel.setText("Total Account Income:\n" +
+                UserServices.getUserTotalIncome(SessionManager.getCurrentUser().getId(),
+                        SessionManager.getCurrentAccount().getAccountID()) + "$");
+
     }
 
     public void addPressed() {
         Stage tempStage = new Stage();
         tempStage.setTitle("Account Creation");
+        VBox vbox = new VBox();
+        vbox.setAlignment(Pos.CENTER);
         HBox hbox = new HBox();
 
         TextField nameField = new TextField();
@@ -93,13 +103,16 @@ public class HomepageController implements Initializable {
         TextField balanceField = new TextField();
         balanceField.setPromptText("Enter account balance");
         Button addBtn = new Button("ADD");
+        Label errorLabel = new Label("");
+        errorLabel.setStyle("-fx-text-fill: red");
 
+        vbox.getChildren().addAll(hbox, errorLabel);
         hbox.getChildren().addAll(nameField, balanceField, addBtn);
         hbox.setPadding(new Insets(5, 5, 5, 5));
         hbox.setSpacing(10);
         hbox.setAlignment(Pos.CENTER);
 
-        tempStage.setScene(new Scene(hbox, 500, 60));
+        tempStage.setScene(new Scene(vbox, 500, 60));
         tempStage.show();
 
         addBtn.setOnAction(e -> {
@@ -108,23 +121,8 @@ public class HomepageController implements Initializable {
             if (AccountServices.processAddAccount(acctName, acctBalance)) {
                 tempStage.close();
                 setComboBox();
-                setPieChart();
-            }
-        });
-    }
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-        setWelcomeLabel();
-        setComboBox();
-
-        accountComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (newValue != null) {
-                SessionManager.setCurrentAccount(AccountServices.getAccountByName(newValue));
-                setPieChart();;
-                setInfoLabels();
             } else {
-                expensesPie.getData().clear();
+                errorLabel.setText("Account already exists.");
             }
         });
     }
@@ -135,5 +133,31 @@ public class HomepageController implements Initializable {
 
     public void budgetsBtn() {
         mainApplication.changeFXML("budgets.fxml");
+    }
+
+    public void processLogout() {
+        SessionManager.logout();
+        mainApplication.changeFXML("login.fxml");
+    }
+
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+        setWelcomeLabel();
+        setComboBox();
+
+        totExpensesLabel.setText("Total Expenses:");
+        acctBalanceLabel.setText("Total Account Income:");
+
+        accountComboBox.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                SessionManager.setCurrentAccount(
+                        AccountServices.getAccountByName(SessionManager.getCurrentUser().getId(), newValue)
+                );
+                setPieChart();
+                setInfoLabels();
+            } else {
+                expensesPie.getData().clear();
+            }
+        });
     }
 }

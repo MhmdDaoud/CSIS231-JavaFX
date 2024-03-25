@@ -6,92 +6,111 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.project1.HomepageController">
-   <children>
-      <HBox alignment="CENTER" prefHeight="51.0" prefWidth="800.0" style="-fx-border-color: #000000;">
+<AnchorPane prefHeight="563.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.project1.HomepageController">
+    <children>
+        <HBox alignment="CENTER" prefHeight="51.0" prefWidth="800.0" style="-fx-border-color: #000000;">
+            <children>
+                <Button fx:id="budgetsBtn" mnemonicParsing="false" onAction="#budgetsBtn" style="-fx-border-radius: 3; -fx-background-color: #2a292e;" text="BUDGETS" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Bold" size="22.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="12.0" right="12.0" />
+                    </HBox.margin>
+                    <padding>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                    </padding>
+                </Button>
+                <Button fx:id="transBtn" mnemonicParsing="false" onAction="#transBtn" style="-fx-border-radius: 3; -fx-background-color: #2a292e;" text="TRANSACTIONS" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Bold" size="22.0" />
+                    </font>
+                    <padding>
+                        <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+                    </padding>
+                    <HBox.margin>
+                        <Insets left="12.0" right="12.0" />
+                    </HBox.margin>
+                </Button>
+                <Button fx:id="addAccountBtn" mnemonicParsing="false" onAction="#addPressed" prefHeight="32.0" prefWidth="157.0" style="-fx-border-radius: 3; -fx-background-color: #2a292e;" text="ADD ACCOUNT" textAlignment="CENTER" textFill="WHITE" textOverrun="CENTER_ELLIPSIS">
+                    <HBox.margin>
+                        <Insets left="12.0" right="12.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font name="Roboto Bold" size="22.0" />
+                    </font>
+               <padding>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </padding>
+                </Button>
+                <ComboBox fx:id="accountComboBox" prefHeight="32.0" prefWidth="125.0" style="-fx-border-radius: 3; -fx-background-color: #2a292e;">
+                    <HBox.margin>
+                        <Insets left="12.0" right="12.0" />
+                    </HBox.margin>
+               <padding>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </padding>
+                </ComboBox>
+            <Button fx:id="logoutBtn" mnemonicParsing="false" onAction="#processLogout" style="-fx-border-radius: 3; -fx-background-color: #2a292e;" text="LOGOUT" textFill="WHITE">
+               <font>
+                  <Font name="Roboto Bold" size="22.0" />
+               </font>
+               <padding>
+                  <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
+               </padding>
+            </Button>
+            </children>
+        </HBox>
+      <GridPane alignment="CENTER" layoutY="51.0" prefHeight="540.0" prefWidth="800.0" style="-fx-border-color: #2a292e;">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
          <children>
-            <Button fx:id="budgetsBtn" onAction="#budgetsBtn" mnemonicParsing="false" style="-fx-border-color: black; -fx-border-radius: 3;" text="BUDGETS">
-               <font>
-                  <Font name="Roboto Bold" size="22.0" />
-               </font>
-               <HBox.margin>
-                  <Insets left="12.0" right="12.0" />
-               </HBox.margin>
-               <padding>
-                  <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-               </padding>
-            </Button>
-            <Button fx:id="expensesBtn" mnemonicParsing="false" style="-fx-border-color: black; -fx-border-radius: 3;" text="EXPENSES">
-               <font>
-                  <Font name="Roboto Bold" size="22.0" />
-               </font>
-               <padding>
-                  <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-               </padding>
-               <HBox.margin>
-                  <Insets left="12.0" right="12.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="transBtn" onAction="#transBtn" mnemonicParsing="false" style="-fx-border-color: black; -fx-border-radius: 3;" text="TRANSACTIONS">
-               <font>
-                  <Font name="Roboto Bold" size="22.0" />
-               </font>
-               <padding>
-                  <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-               </padding>
-               <HBox.margin>
-                  <Insets left="12.0" right="12.0" />
-               </HBox.margin>
-            </Button>
-            <Button fx:id="settingsBtn" mnemonicParsing="false" style="-fx-border-color: black; -fx-border-radius: 3;" text="SETTINGS">
-               <font>
-                  <Font name="Roboto Bold" size="22.0" />
-               </font>
-               <padding>
-                  <Insets bottom="1.0" left="1.0" right="1.0" top="1.0" />
-               </padding>
-               <HBox.margin>
-                  <Insets left="12.0" right="12.0" />
-               </HBox.margin>
-            </Button>
-            <ComboBox fx:id="accountComboBox" prefHeight="32.0" prefWidth="125.0" style="-fx-border-color: black; -fx-border-radius: 3;">
-               <HBox.margin>
-                  <Insets left="12.0" right="12.0" />
-               </HBox.margin>
-            </ComboBox>
-            <Button fx:id="addAccountBtn" mnemonicParsing="false" onAction="#addPressed" prefHeight="32.0" prefWidth="32.0" style="-fx-border-color: black; -fx-border-radius: 3;" text="+" textAlignment="CENTER" textOverrun="CENTER_ELLIPSIS">
-               <HBox.margin>
-                  <Insets left="12.0" right="12.0" />
-               </HBox.margin>
-               <font>
-                  <Font name="Roboto Bold" size="15.0" />
-               </font>
-            </Button>
+            <VBox prefHeight="563.0" prefWidth="406.0">
+               <children>
+                      <Label fx:id="welcomeLabel" prefHeight="30.0" prefWidth="350.0" textFill="#2a292e">
+                          <font>
+                              <Font name="Roboto Regular" size="20.0" />
+                          </font>
+                     <VBox.margin>
+                        <Insets left="5.0" top="35.0" />
+                     </VBox.margin>
+                      </Label>
+                      <Label fx:id="totExpensesLabel" prefHeight="50.0" prefWidth="283.0" textFill="#2a292e">
+                          <font>
+                              <Font name="Roboto Regular" size="18.0" />
+                          </font>
+                     <VBox.margin>
+                        <Insets left="5.0" top="35.0" />
+                     </VBox.margin>
+                      </Label>
+                      <Label fx:id="acctBalanceLabel" prefHeight="50.0" prefWidth="215.0" textFill="#2a292e">
+                          <font>
+                              <Font name="Roboto Regular" size="18.0" />
+                          </font>
+                     <VBox.margin>
+                        <Insets left="5.0" top="35.0" />
+                     </VBox.margin>
+                      </Label>
+               </children>
+            </VBox>
+            <VBox alignment="CENTER_RIGHT" GridPane.columnIndex="1">
+               <children>
+                      <PieChart fx:id="expensesPie" prefHeight="430.0" prefWidth="462.0" />
+               </children>
+            </VBox>
          </children>
-      </HBox>
-      <Pane layoutY="51.0" prefHeight="549.0" prefWidth="800.0">
-         <children>
-            <PieChart fx:id="expensesPie" layoutX="320.0" layoutY="106.0" prefHeight="430.0" prefWidth="462.0" />
-            <Label fx:id="welcomeLabel" layoutX="14.0" layoutY="14.0" prefHeight="30.0" prefWidth="521.0">
-               <font>
-                  <Font name="Roboto Regular" size="20.0" />
-               </font>
-            </Label>
-            <Label fx:id="totExpensesLabel" layoutX="14.0" layoutY="97.0" prefHeight="30.0" prefWidth="283.0">
-               <font>
-                  <Font name="Roboto Regular" size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="welcomeLabel11" layoutX="14.0" layoutY="156.0" prefHeight="30.0" prefWidth="215.0">
-               <font>
-                  <Font name="Roboto Regular" size="20.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-   </children>
+      </GridPane>
+    </children>
 </AnchorPane>

@@ -14,39 +14,64 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="600.0" prefWidth="810.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.project1.TransactionsController">
     <children>
         <VBox spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <HBox spacing="10.0">
-                    <Button fx:id="backBtn" onAction="#backPressed" text="Back to Dashboard" />
-                    <Button fx:id="refreshBtn" onAction="#refreshPressed" text="Refresh" />
-                    <TextField fx:id="searchBar" promptText="Search" />
-                    <Button fx:id="searchBtn" onAction="#searchPressed" text="Search" />
+                    <Button fx:id="backBtn" onAction="#backPressed" style="-fx-background-color: #2a292e;" text="Back to Dashboard" textFill="WHITE">
+                  <font>
+                     <Font name="Roboto Regular" size="12.0" />
+                  </font></Button>
+                    <Button fx:id="refreshBtn" onAction="#refreshPressed" style="-fx-background-color: #2a292e;" text="Refresh" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Regular" size="12.0" />
+                    </font> </Button>
+                    <TextField fx:id="searchBar" promptText="Search" style="-fx-background-color: #2a292e; -fx-text-fill: white">
+                    <font>
+                        <Font name="Roboto Regular" size="12.0" />
+                    </font> </TextField>
+                    <Button fx:id="searchBtn" onAction="#searchPressed" style="-fx-background-color: #2a292e;" text="Search" textFill="WHITE">
+                  <font>
+                     <Font name="Roboto Regular" size="12.0" />
+                  </font></Button>
                 </HBox>
                 <HBox spacing="10.0">
                     <ComboBox fx:id="selectAccountCombo" promptText="Select Account" />
-               <DatePicker fx:id="startDateField" promptText="Start Date" />
-               <DatePicker fx:id="endDateField" promptText="End Date" />
-                    <Button fx:id="filterBtn" onAction="#filterPressed" text="Filter" />
+                    <DatePicker fx:id="startDateField" promptText="Start Date" />
+                    <DatePicker fx:id="endDateField" promptText="End Date" />
+                    <Button fx:id="filterBtn" onAction="#filterPressed" style="-fx-background-color: #2a292e;" text="Filter" textFill="WHITE">
+                  <font>
+                     <Font name="Roboto Regular" size="12.0" />
+                  </font></Button>
                 </HBox>
                 <TableView fx:id="dataTable" prefHeight="400.0" prefWidth="810.0">
                     <columns>
-                        <TableColumn fx:id="transactionIdColumn" minWidth="25.0" prefWidth="135.0" text="Transaction ID" />
+                        <TableColumn fx:id="transactionIdColumn" minWidth="25.0" prefWidth="135.0" style="-fx-text-fill: #000000;" text="Transaction ID" />
                         <TableColumn fx:id="dateColumn" minWidth="25.0" prefWidth="135.0" text="Date" />
                         <TableColumn fx:id="descriptionColumn" minWidth="25.0" prefWidth="135.0" text="Description" />
                         <TableColumn fx:id="categoryColumn" minWidth="25.0" prefWidth="135.0" text="Category" />
                         <TableColumn fx:id="amountColumn" minWidth="25.0" prefWidth="135.0" text="Amount" />
                     </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                    </columnResizePolicy>
                 </TableView>
                 <HBox spacing="10.0">
-                    <Button fx:id="addTransBtn" onAction="#addTransBtnPressed" text="Add Transaction" />
-                    <Button fx:id="editTransBtn" onAction="#editTransPressed" text="Edit Transaction" />
-                    <Button fx:id="deleteTransBtn" onAction="#deleteTransPressed" text="Delete Transaction" />
+                    <Button fx:id="addTransBtn" onAction="#addTransBtnPressed" style="-fx-background-color: #2a292e;" text="Add Transaction" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Regular" size="12.0" />
+                    </font> </Button>
+                    <Button fx:id="editTransBtn" onAction="#editTransPressed" style="-fx-background-color: #2a292e;" text="Edit Transaction" textFill="WHITE">
+                  <font>
+                     <Font name="Roboto Regular" size="12.0" />
+                  </font></Button>
+                    <Button fx:id="deleteTransBtn" onAction="#deleteTransPressed" style="-fx-background-color: #2a292e;" text="Delete Transaction" textFill="WHITE">
+                    <font>
+                        <Font name="Roboto Regular" size="12.0" />
+                    </font> </Button>
                 </HBox>
                 <VBox prefHeight="68.0" prefWidth="810.0" spacing="10.0">
                     <Label text="Summary Statistics" />
@@ -55,7 +80,7 @@
                     <Label fx:id="netBalanceField" text="Net Balance: $XXX" />
                 </VBox>
                 <VBox spacing="10.0">
-               <Label text="Financial Overview" />
+                    <Label text="Financial Overview" />
                     <BarChart fx:id="barChart" legendSide="TOP" legendVisible="true" prefHeight="150.0" prefWidth="806.0" titleSide="BOTTOM">
                         <xAxis>
                             <CategoryAxis side="BOTTOM" />
@@ -68,7 +93,7 @@
             </children>
         </VBox>
     </children>
-   <padding>
-      <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
-   </padding>
+    <padding>
+        <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+    </padding>
 </AnchorPane>
